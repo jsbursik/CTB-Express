@@ -1,3 +1,4 @@
+const https = require('https');
 const express = require('express');
 const cors = require ('cors');
 const fs = require('fs');
@@ -11,6 +12,8 @@ const bodyParser = require('body-parser');
 require('dotenv').config({ path: './.env' });
 
 const port = process.env.PORT || 3000;
+const key_file = process.env.KEY_FILE;
+const cert_file = process.env.CERT_FILE;
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -26,11 +29,15 @@ const upload = multer({
 });
 
 var corsOptions = {
-    origin: `http://${process.env.CORS_HOST}`,
+    origin: `https://${process.env.CORS_HOST}`,
     optionsSuccessStatus: 200
 }
 
 app.use(cors(corsOptions));
+
+https.createServer({key: fs.readFileSync(key_file), cert: fs.readFileSync(cert_file),}, app).listen(port, () => {
+    console.log("Server is listening on port ", port);
+});
 
 const transporter = nodemailer.createTransport({
     host: 'mail.cartruckbuyer.com',
@@ -107,8 +114,4 @@ app.post('/send', upload.array('photos'), function (req, res) {
             });
         }
     });
-});
-
-app.listen(port, () => {
-    console.log('Express started on port: ', port);
 });
