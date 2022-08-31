@@ -35,7 +35,12 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-https.createServer({key: fs.readFileSync(key_file), cert: fs.readFileSync(cert_file),}, app).listen(port, () => {
+https.createServer(
+	{
+		key: fs.readFileSync(key_file),
+		cert: fs.readFileSync(cert_file),
+	}, app)
+.listen(port, () => {
     console.log("Server is listening on port ", port);
 });
 
