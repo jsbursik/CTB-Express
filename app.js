@@ -45,7 +45,7 @@ https.createServer(
 });
 
 const transporter = nodemailer.createTransport({
-    host: 'mail.cartruckbuyer.com',
+    host: 'giowm1031.siteground.biz',
     port: 465,
     secure: true,
     auth: {
